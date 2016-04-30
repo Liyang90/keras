@@ -315,11 +315,13 @@ class ImageDataGenerator(object):
 
     def standardize(self, x):
         # x is a single image, so it doesn't have image number at index 0
+        img_row_index = self.row_index - 1
+        img_col_index = self.col_index - 1
         img_channel_index = self.channel_index - 1
         if self.samplewise_center:
-            x -= np.mean(x, axis=img_channel_index, keepdims=True)
+            x -= np.mean(x, axis=(img_channel_index,img_row_index,img_col_index), keepdims=True)
         if self.samplewise_std_normalization:
-            x /= (np.std(x, axis=img_channel_index, keepdims=True) + 1e-7)
+            x /= (np.std(x, axis=(img_channel_index,img_row_index,img_col_index), keepdims=True) + 1e-7)
 
         if self.featurewise_center:
             x -= self.mean
